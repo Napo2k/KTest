@@ -17,10 +17,8 @@ repositories {
   mavenCentral()
 }
 
-task compile << {
-  println "compiling your face"
-}
-
-task compileTest(dependsOn: compile) << {
-  println "compile testsssss"
+test {
+    testLogging {
+        events 'started', 'passed'
+    }
 }

@@ -37,11 +37,6 @@ public class ServletTesterUtils {
     	request.setMethod("GET");
     	request.setURI(uri);
     	request.setVersion("HTTP/1.0");
-    	if (headers != null) {
-    		for (String header : headers.keySet()) {
-    			request.setHeader(header, headers.get(header));
-    		}
-    	}
     	
     	HttpTester response = new HttpTester();
     	response.parse(servlet.getResponses(request.generate()));
