@@ -11,12 +11,11 @@ public class ServletTest
 	@Test
 	public void getRequestTest() throws Exception {
 		ServletTester servletTester = ServletTesterUtils.createServletTester();
-		ServletTesterUtils.initServlet(servletTester, "/", com.caplin.example.MyServlet.class, "/validUrl");
+		ServletTesterUtils.initServlet(servletTester, "/", org.gradle.examples.web.MyServlet.class, "/validUrl");
 		
 		HttpTester response = ServletTesterUtils.makeRequest(servletTester, "/validUrl");
 		
 		assertEquals(200,response.getStatus());
-		assertEquals("It works :-)",response.getContent());
-		assertEquals("yes",response.getHeader("did-it-work"));
+		assertEquals("hello, world",response.getContent());
 	}
 }
