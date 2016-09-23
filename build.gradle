@@ -8,9 +8,8 @@ configurations {
 dependencies {
   provided 'javax.servlet:servlet-api:2.4'
   compile configurations.provided
+  testCompile 'org.mockito:mockito-all:1.10.19'
   testCompile 'junit:junit:4.12'
-  testCompile 'org.mortbay.jetty:jetty-servlet-tester:6.1.26RC0'
-  testCompile 'org.mortbay.jetty:jetty-servlet:7.0.0pre0'
 }
 
 repositories {
