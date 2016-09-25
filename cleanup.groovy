@@ -10,8 +10,9 @@ import hudson.FilePath.FileCallable;
 import hudson.slaves.OfflineCause;
 import hudson.node_monitors.*;
 
-def getTimeAccessed(path) {
-  pathStr = path.getRemote()
+// small function to use for comparison of ws paths
+def getTimeAccessed(ws) {
+  pathStr = ws.getRemote()
   Path dir = Paths.get(pathStr) 
   BasicFileAttributes attrs = Files.readAttributes(dir, BasicFileAttributes)
   return attrs.lastAccessTime()  
@@ -46,10 +47,15 @@ for (item in jInstance.items) {
   }
 }
 
-wsList.sort{a,b -> getTimeAccessed(b)<=>getTimeAccessed(a)}
-for (ws in wsList) {
-  ws.deleteRecursive()
+if (wsList) {
+	wsList.sort{a,b -> getTimeAccessed(a)<=>getTimeAccessed(b)}
+	for (ws in wsList[0..-3]) {
+		println(".. proceeding to delete " + ws.getRemote())
+		ws.deleteRecursive()
+	}	
 }
+
+wsList = []
 
 // Slaves 
 for (node in jInstance.nodes) {
@@ -64,7 +70,6 @@ for (node in jInstance.nodes) {
         println(".. job " + jobName + " is currently running, skipped")
         continue
       }
-      println(".. wiping out workspaces of job " + jobName)
       
       workspacePath = node.getWorkspaceFor(item)
       if (workspacePath == null) {
@@ -76,12 +81,20 @@ for (node in jInstance.nodes) {
 
       pathAsString = workspacePath.getRemote()
       if (workspacePath.exists()) {
-        workspacePath.deleteRecursive()
-        println(".... deleted from location " + pathAsString)
+        wsList << workspacePath
+        println(".... added " + pathAsString + " to list")
       } else {
         println(".... nothing to delete at " + pathAsString)
       }
     }
 
   computer.setTemporarilyOffline(false, null)
+}
+
+if (wsList) {
+	wsList.sort{a,b -> getTimeAccessed(a)<=>getTimeAccessed(b)}
+	for (ws in wsList[0..-3]) {
+		println(".. proceeding to delete " + ws.getRemote())
+		ws.deleteRecursive()
+	}	
 }
