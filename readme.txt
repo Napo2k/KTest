@@ -1,11 +1,11 @@
 This repository is a clone of the repository for the first exercise, and I have used to deposit all the deliverables for the test.
 
 For the first exercise, you can find the Unit test in src\test\java\org\gradle\examples\web\ServletTest.java.
-Modifications to the build.gradle file have been done directly on the cloned one, that can be found at the root of the repository.
+Modifications to the build.gradle file have been done directly on the cloned one, that can be found at the root of the repository. I tried to keep them as minimal as possible, just to allow for my unit test to run.
 The Jenkinsfile that defines the job can be found next to it.
 
 For the second exercise, I created a freestyle job that ran a system groovy script. Said script can be found at the root of the repository, and it's called cleanup.groovy
-The script grabs the workspaces for all the jobs both in the master and in the slaves, for the jobs that are not running. 
+The script grabs the workspaces for all the non-running jobs both in the master and in the slaves. 
 It then sorts them out on last modified (the reasoning being, that I think repositories that haven't had activity are less likely to become active).
 Finally, it deletes the older ones, leaving the 3 newest untouched.
 The problems with this approach are that we are forced to resync if a job gets triggered after a while, and that weird things could happen if a job triggers between the collection of the workspace, and its deletion.
